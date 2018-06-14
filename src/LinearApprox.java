@@ -63,7 +63,7 @@ public class LinearApprox {
             app.setValues(values);
         }
         else if (response.equals("auto")){
-            System.out.print("Введите коэффициенты a, b и длину выборки n: ");
+            System.out.print("Введите коэффициенты a, b, длину выборки n и процент случайности (0-100): ");
             float a,b;
             try {
                 a = CheckFloat(reader);
@@ -76,7 +76,7 @@ public class LinearApprox {
             }
         }
         float[] res = app.calculate();
-        System.out.print("Функция имеет вид: " + String.valueOf(res[0]) +"x");
+        System.out.print("Функция имеет вид: " + String.valueOf(res[0]) +"*x");
         if (res[1] > 0)
             System.out.println(" + " + String.valueOf(res[1]));
         else
@@ -84,14 +84,16 @@ public class LinearApprox {
         app.printValues();
     }
 
-    public void functionSetup(float a, float b, int n, float distortion){
+    public void functionSetup(float a, float b, int n, int distortion){
         //Создает исходные данные, искажая функцию y = ax + b случайными отклонениями
         //Distortion - определяет искажение значения, значение будет домножено на [1-distortion;1+distortion]
+        if (distortion > 100)
+            distortion = 100;
         Random random = new Random();
         for (int i = 0; i < n; ++i ){
             values.add(new Point2D.Float());
             values.get(i).x = i;
-            float coeff = ((float)(100 - distortion*100 + random.nextInt((int)(2*(distortion)*100)))/100);
+            float coeff = ((float)(100 - distortion + random.nextInt(2*distortion)))/100;
             values.get(i).y = (a*i + b) * coeff; //Домножается на случайную величину в пределах 0.85 - 1.15
         }
     }
