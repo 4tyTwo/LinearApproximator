@@ -34,8 +34,20 @@ public class LinearApprox {
         if (a == POSITIVE_INFINITY || a == NEGATIVE_INFINITY || b == POSITIVE_INFINITY || b ==   NEGATIVE_INFINITY ){
             System.out.println("Произошло деление на 0, ответ неверен");
         }
-        float[] ans = {a,b};
+        float[] ans = {a,b,calcError(a,b)};
         return ans;
+    }
+
+    private float calcError(float a, float b){
+        float averageBase = 0, averageError = 0;
+        for (int i=0; i < values.size(); ++i){
+            averageBase += values.get(i).y;
+        }
+
+        for (int i=0; i < values.size(); ++i){
+            averageError+= Math.abs(a*i + b - values.get(i).y);
+        }
+        return averageError/averageBase;
     }
 
     public static void main(String[] args){
@@ -81,6 +93,7 @@ public class LinearApprox {
             System.out.println(" + " + String.valueOf(res[1]));
         else
             System.out.println(" " + String.valueOf(res[1]));
+        System.out.println("Коэффициент отклонения: " + String.valueOf(res[2] * 100)+"%");
         app.printValues();
     }
 
@@ -99,12 +112,14 @@ public class LinearApprox {
     }
 
     public void printValues(){
-        System.out.println("X: ");
+        System.out.print("X: [ ");
         for (int i = 0; i <  values.size(); ++i)
             System.out.print(String.valueOf(values.get(i).x) + " " );
-        System.out.println("\nY: ");
+        System.out.print(" ]");
+        System.out.print("\nY: [ ");
         for (int i = 0; i <  values.size(); ++i)
             System.out.print(String.valueOf(values.get(i).y) + " ");
+        System.out.print(" ]");
     }
 
     private static float CheckFloat(Scanner sc) throws MyException {
