@@ -1,9 +1,5 @@
-import javax.sound.sampled.Line;
 import java.awt.geom.Point2D;
-
-import java.lang.invoke.VarHandle;
 import java.util.*;
-
 import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.POSITIVE_INFINITY;
 
@@ -100,13 +96,14 @@ public class LinearApprox {
     public void functionSetup(float a, float b, int n, int distortion){
         //Создает исходные данные, искажая функцию y = ax + b случайными отклонениями
         //Distortion - определяет искажение значения, значение будет домножено на [1-distortion;1+distortion]
+        float coeff;
         if (distortion > 100)
             distortion = 100;
         Random random = new Random();
         for (int i = 0; i < n; ++i ){
             values.add(new Point2D.Float());
             values.get(i).x = i;
-            float coeff = ((float)(100 - distortion + random.nextInt(2*distortion)))/100;
+            coeff = ((float)(100 - distortion + random.nextInt(2*distortion)))/100;
             values.get(i).y = (a*i + b) * coeff; //Домножается на случайную величину в пределах 0.85 - 1.15
         }
     }
@@ -115,11 +112,11 @@ public class LinearApprox {
         System.out.print("X: [ ");
         for (int i = 0; i <  values.size(); ++i)
             System.out.print(String.valueOf(values.get(i).x) + " " );
-        System.out.print(" ]");
+        System.out.print("]");
         System.out.print("\nY: [ ");
         for (int i = 0; i <  values.size(); ++i)
             System.out.print(String.valueOf(values.get(i).y) + " ");
-        System.out.print(" ]");
+        System.out.print("]");
     }
 
     private static float CheckFloat(Scanner sc) throws MyException {
