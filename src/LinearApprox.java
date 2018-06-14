@@ -69,7 +69,7 @@ public class LinearApprox {
                 a = CheckFloat(reader);
                 b = CheckFloat(reader);
                 int n = reader.nextInt();
-                app.functionSetup(a,b,n);
+                app.functionSetup(a,b,n,15);
             }
             catch (MyException e){
                 System.out.println(e.toString());
@@ -84,13 +84,14 @@ public class LinearApprox {
         app.printValues();
     }
 
-    public void functionSetup(float a, float b, int n){
+    public void functionSetup(float a, float b, int n, float distortion){
         //Создает исходные данные, искажая функцию y = ax + b случайными отклонениями
+        //Distortion - определяет искажение значения, значение будет домножено на [1-distortion;1+distortion]
         Random random = new Random();
         for (int i = 0; i < n; ++i ){
             values.add(new Point2D.Float());
             values.get(i).x = i;
-            float coeff = ((float)(85 + random.nextInt(30))/100);
+            float coeff = ((float)(100 - distortion*100 + random.nextInt((int)(2*(distortion)*100)))/100);
             values.get(i).y = (a*i + b) * coeff; //Домножается на случайную величину в пределах 0.85 - 1.15
         }
     }
