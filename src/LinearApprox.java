@@ -1,5 +1,8 @@
+import org.jfree.ui.RefineryUtilities;
+
 import java.awt.geom.Point2D;
 import java.util.*;
+
 import static java.lang.Float.NEGATIVE_INFINITY;
 import static java.lang.Float.POSITIVE_INFINITY;
 
@@ -7,7 +10,7 @@ public class LinearApprox {
     //Общий вид функции: y = a * x + b
     //Программа будет представлять набор данных именно через функцию такого вида
     ArrayList<Point2D.Float>  values; //Набор точек дискретной функции
-
+    float a,b; //Коэффициенты уравнения
     LinearApprox(){
         values = new ArrayList<>();
     }
@@ -16,7 +19,6 @@ public class LinearApprox {
     }
 
     public float[] calculate(){
-        float a, b; //Коэффициенты уравнения
         float summX = 0, summY = 0,summXsq = 0,summXY = 0;
         int n = values.size();
         for (int i = 0; i < values.size(); ++i){
@@ -91,6 +93,13 @@ public class LinearApprox {
             System.out.println(" " + String.valueOf(res[1]));
         System.out.println("Коэффициент отклонения: " + String.valueOf(res[2] * 100)+"%");
         app.printValues();
+        PlotPane a = new PlotPane("Correlation");
+        a.addData("Base",app.values);
+        a.addData("Approxed",app.CreateApproximateValues());
+        a.pack();
+        a.plot("Compare");
+        RefineryUtilities.centerFrameOnScreen(a);
+        a.setVisible(true);
     }
 
     public void functionSetup(float a, float b, int n, int distortion){
@@ -132,6 +141,14 @@ public class LinearApprox {
             // Кидаем исключение
             throw new MyException("Wrong type");
         }
+    }
+
+    public ArrayList<Point2D.Float> CreateApproximateValues(){
+        ArrayList<Point2D.Float> approxValues = (ArrayList<Point2D.Float>) values.clone();
+        for (int i = 0; i < values.size(); ++i){
+            approxValues.get(i).y = a * approxValues.get(i).x + b;
+        }
+        return approxValues;
     }
 
     private static class MyException extends Exception {
