@@ -6,4 +6,5 @@ Simple linear approximation realisation<br />
 Пользователь также получает коэффициент подобия, основанный на отношении отклонения функции к ее значению в точке<br />
 TO DO: 
 * Добавить поддержку нелинейной апроксимизируемой функции в автоматизированном режиме ввода<br />
-
+Примеры работы:<bt />
+![2 линейных функции](https://github.com/4tyTwo/LinearApproximator/blob/master/Examples/Parabola%2C%20hand%20mode.jpg)
